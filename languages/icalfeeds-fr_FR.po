@@ -1,0 +1,146 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: iCal Feeds Plugin\n"
+"POT-Creation-Date: 2017-10-28 11:33+0100\n"
+"PO-Revision-Date: 2017-10-28 11:36+0100\n"
+"Last-Translator: Maxime VALETTE <maxime@maximevalette.com>\n"
+"Language-Team: Maxime VALETTE <maxime@maximevalette.com>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.6\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Language: en_US\n"
+"X-Source-Language: C\n"
+"X-Poedit-SearchPath-0: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-"
+"feeds\n"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:25
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:26
+msgid "iCal Feeds"
+msgstr "Flux iCal"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:96
+msgid "Configuration updated."
+msgstr "Configuration mise à jour."
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:106
+msgid "You have to define your current timezone (specify a city) in"
+msgstr "Vous devez définir votre fuseau horaire (en spécifiant une ville) dans"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:107
+msgid "Settings > General"
+msgstr "Réglages > Général"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:112
+msgid "iCal Feeds Configuration"
+msgstr "Configuration de iCal Feeds"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:118
+msgid "Advanced Options"
+msgstr "Options avancées"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:122
+msgid "Enable a secret parameter to view ALL future posts."
+msgstr "Activer un paramètre secret pour voir tous les billets programmés."
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:124
+msgid "Secret parameter value:"
+msgstr "Valeur du paramètre secret :"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:127
+msgid "Time interval per post:"
+msgstr "Intervalle de temps par article :"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:128
+msgid "minutes"
+msgstr "minutes"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:130
+msgid "Number of blog posts:"
+msgstr "Nombre de billets :"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:131
+msgid "blog posts"
+msgstr "billets"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:133
+msgid "Number of future posts:"
+msgstr "Nombre de billets dans le futur :"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:134
+msgid "future posts"
+msgstr "billets futurs"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:138
+msgid "Save"
+msgstr "Sauver"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:140
+msgid "Main iCal feeds"
+msgstr "Flux iCal principaux"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:142
+msgid "You can use the below addresses to add in your iCal software:"
+msgstr ""
+"Vous pouvez utiliser les adresses ci-dessous pour les ajouter dans votre "
+"logiciel iCal :"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:146
+msgid "Public iCal feed"
+msgstr "Flux iCal public"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:149
+msgid "Private iCal feed"
+msgstr "Flux iCal privé"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:154
+msgid "Categories iCal feeds"
+msgstr "Flux iCal des catégories"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:162
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:199
+msgid "Public iCal feed for"
+msgstr "Flux iCal public pour"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:168
+msgid "Multiple categories iCal feeds"
+msgstr "Flux iCal de plusieurs catégories"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:170
+msgid ""
+"You can add multiple categories in only one URL. Just check the categories "
+"you want below:"
+msgstr ""
+"Vous pouvez ajouter plusieurs catégories dans une seule URL. Cochez les "
+"catégories que vous souhaitez ci-dessous :"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:182
+msgid "URL:"
+msgstr "URL :"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:193
+msgid "Post Type iCal feeds"
+msgstr "Flux iCal pour le type de billet"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:207
+msgid "Custom Date iCal feed"
+msgstr "Flux iCal pour la date personnalisée"
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:209
+msgid ""
+"You can use a custom date field instead of the default publish date. The "
+"Meta Key must exist in the Post Meta table."
+msgstr ""
+"Vous pouvez utiliser un champ de date personnalisé à la place de la date de "
+"publication par défaut. La clé meta doit exister dans la table Post Meta."
+
+#: /Users/maxime/Sites/wordpress/wp-content/plugins/ical-feeds/ical-feeds.php:213
+msgid "You can also use a custom end date field width enddatefield."
+msgstr ""
+"Vous pouvez également utiliser un champ de date de fin personnalisé avec "
+"enddatefield."
