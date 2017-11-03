@@ -35,6 +35,8 @@ function icalfeeds_conf() {
 	$options = get_option('icalfeeds');
 
 	if (!isset($options['icalfeeds_minutes'])) $options['icalfeeds_minutes'] = 60;
+	if (!isset($options['icalfeeds_start_hours'])) $options['icalfeeds_start_hours'] = 0;
+    	if (!isset($options['icalfeeds_start_minutes'])) $options['icalfeeds_start_minutes'] = 0;
 	if (!isset($options['icalfeeds_secret'])) $options['icalfeeds_secret'] = 'changeme';
 	if (!isset($options['icalfeeds_senable'])) $options['icalfeeds_senable'] = 0;
 	if (!isset($options['icalfeeds_limit'])) $options['icalfeeds_limit'] = 50;
@@ -50,6 +52,18 @@ function icalfeeds_conf() {
             $icalfeeds_minutes = (int) $_POST['icalfeeds_minutes'];
         } else {
             $icalfeeds_minutes = 60;
+        }
+		
+	if (isset($_POST['icalfeeds_start_hours'])) {
+            $icalfeeds_start_hours = (int) $_POST['icalfeeds_start_hours'];
+        } else {
+            $icalfeeds_start_hours = 0;
+        }
+ 
+        if (isset($_POST['icalfeeds_start_minutes'])) {
+            $icalfeeds_start_minutes = (int) $_POST['icalfeeds_start_minutes'];
+        } else {
+            $icalfeeds_start_minutes = 0;
         }
 
         if (isset($_POST['icalfeeds_secret'])) {
@@ -77,6 +91,8 @@ function icalfeeds_conf() {
         }
 
 		$options['icalfeeds_minutes'] = $icalfeeds_minutes;
+		$options['icalfeeds_start_hours'] = $icalfeeds_start_hours;
+        	$options['icalfeeds_start_minutes'] = $icalfeeds_start_minutes;
 		$options['icalfeeds_secret']  = $icalfeeds_secret;
 		$options['icalfeeds_senable'] = $icalfeeds_senable;
 		$options['icalfeeds_limit']   = $icalfeeds_limit;
@@ -126,6 +142,10 @@ function icalfeeds_conf() {
 
     echo '<h3><label for="icalfeeds_minutes">'.__('Time interval per post:', ICALFEEDS_TEXTDOMAIN).'</label></h3>';
     echo '<p><input type="number" id="icalfeeds_minutes" name="icalfeeds_minutes" value="'.$options['icalfeeds_minutes'].'" style="width: 50px; text-align: center;" /> '.__('minutes', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
+    echo '<h3><label for="icalfeeds_minutes">'.__('Start Time per post:', ICALFEEDS_TEXTDOMAIN).'</label></h3>';
+    echo '<p><input type="number" id="icalfeeds_start_hours" name="icalfeeds_start_hours" value="'.$options['icalfeeds_start_hours'].'" style="width: 50px; text-align: center;" min="0" max="23" /> : <input type="number" id="icalfeeds_start_minutes" name="icalfeeds_start_minutes" value="'.$options['icalfeeds_start_minutes'].'" style="width: 50px; text-align: center;" min="0" max="59" /> '.__('24-hour military time', ICALFEEDS_TEXTDOMAIN).'</p>';
+    echo '<p><i>leave 0:0 to use time defined by publish date or custom date field.</i></p>';
 
     echo '<h3><label for="icalfeeds_limit">'.__('Number of blog posts:', ICALFEEDS_TEXTDOMAIN).'</label></h3>';
     echo '<p><input type="number" id="icalfeeds_limit" name="icalfeeds_limit" value="'.$options['icalfeeds_limit'].'" style="width: 50px; text-align: center;" /> '.__('blog posts', ICALFEEDS_TEXTDOMAIN).'</p>';
@@ -252,6 +272,8 @@ function icalfeeds_feed() {
 	//Set defaults if no values exist
     $options = get_option('icalfeeds');
     if (!isset($options['icalfeeds_minutes'])) $options['icalfeeds_minutes'] = 60;
+    if (!isset($options['icalfeeds_start_hours'])) $options['icalfeeds_start_hours'] = 0;
+    if (!isset($options['icalfeeds_start_minutes'])) $options['icalfeeds_start_minutes'] = 0;
     if (!isset($options['icalfeeds_limit'])) $options['icalfeeds_limit'] = 50;
     if (!isset($options['icalfeeds_future'])) $options['icalfeeds_future'] = 0;
 
@@ -369,8 +391,18 @@ function icalfeeds_feed() {
         $summary = strip_tags( html_entity_decode( get_the_title() ) );
         $permalink = get_permalink(get_the_ID());
         $timezone = get_option('timezone_string');
-        $guid = get_the_guid(get_the_ID());
+        $guid = urlencode( get_the_guid(get_the_ID()) );
+	$organizer = get_bloginfo( 'name' );
         
+	    
+	//Set Static Start & End Time
+        if( $options['icalfeeds_start_hours'] > 0 || $options['icalfeeds_start_minutes'] > 0) {
+            $start_time = date( 'Ymd\THis', strtotime( substr($start_time, 0, 8) .' '. $options['icalfeeds_start_hours'] .':'. $options['icalfeeds_start_minutes'] .':00' ) - ( get_option( 'gmt_offset' ) * 3600 ) );
+            $end_time = date( 'Ymd\THis', strtotime( substr($end_time, 0, 8) .' '. $options['icalfeeds_start_hours'] .':'. $options['icalfeeds_start_minutes'] .':00' ) - ( get_option( 'gmt_offset' ) * 3600 )  + ($options['icalfeeds_minutes'] * 60) );
+            $modified_time = date( 'Ymd\THis', strtotime( substr($modified_time, 0, 8) .' '. $options['icalfeeds_start_hours'] .':'. $options['icalfeeds_start_minutes'] .':00' ) - ( get_option( 'gmt_offset' ) * 3600 ) );
+        }
+	    
+	//Use Custom End date if available
         if (null !== $post_end_date_field) {
 		    $end_time = date( 'Ymd\THis', strtotime( get_post_meta( get_the_ID(), $post_end_date_field, true ) ) - ( get_option( 'gmt_offset' ) * 3600 ) );
 	    }
@@ -385,6 +417,7 @@ UID:$guid
 DTSTAMP$modified_time
 DTSTART$start_time
 DTEND$end_time
+ORGANIZER:$organizer
 SUMMARY:$summary
 URL;VALUE=URI:$permalink
 END:VEVENT
