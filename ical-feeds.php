@@ -5,7 +5,7 @@ Plugin URI: http://maxime.sh/ical-feeds
 Description: Generate a customizable iCal feed of your present and future blog posts.
 Author: Maxime VALETTE
 Author URI: http://maxime.sh
-Version: 1.5
+Version: 1.6.0
 */
 
 define('ICALFEEDS_TEXTDOMAIN', 'icalfeeds');
@@ -426,11 +426,12 @@ EVENT;
 
     }
 
-    $blog_name = get_bloginfo('name');
+    $blog_name = isset($_GET['blogname']) ? $_GET['blogname'] : get_bloginfo('name');
     $blog_url = get_bloginfo('home');
+    $ics_filename = isset( $_GET['icsname']) ? $_GET['icsname'] : "blog_posts";
 
     header('Content-Type: text/calendar; charset=utf-8');
-    header('Content-Disposition: attachment; filename="blog_posts.ics"');
+    header('Content-Disposition: attachment; filename="' . $ics_filename  . '.ics"');
 
     $content = <<<CONTENT
 BEGIN:VCALENDAR
