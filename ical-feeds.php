@@ -5,7 +5,7 @@ Plugin URI: http://maxime.sh/ical-feeds
 Description: Generate a customizable iCal feed of your present and future blog posts.
 Author: Maxime VALETTE
 Author URI: http://maxime.sh
-Version: 1.5
+Version: 1.5.2
 */
 
 define('ICALFEEDS_TEXTDOMAIN', 'icalfeeds');
@@ -230,7 +230,21 @@ function icalfeeds_conf() {
 
 	echo '<p>Example Date meta_key: "event_date"  <a href="'.site_url().'/?ical&datefield=event_date" target="_blank">'.site_url().'/?ical&datefield=event_date</a></p>';
 
-	echo '<p>'.__('You can also use a custom end date field width enddatefield.', ICALFEEDS_TEXTDOMAIN).'</p>';
+	echo '<p>'.__('You can also use a custom end date field with <b>enddatefield</b>.', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
+	echo '<h2>'.__('Other Custom Fields', ICALFEEDS_TEXTDOMAIN).'</h2>';
+	
+	echo '<p>'.__('<b>&posts</b> filters feed by specific posts and accepts multiple post ids separated by <i>+</i>. Example: &posts=345+876+223', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
+	echo '<p>'.__('<b>&blogname</b> to overide your site name as Organizer of the event.', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
+	echo '<p>'.__('<b>&icsname</b> to overide the ics file name. Default: blog_posts', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
+	echo '<p>'.__('<b>&description</b> accepts <i>excerpt</i> or a custom field meta key. Default: empty', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
+	echo '<p>'.__('<b>&addlink</b> appends the post link to the description field. Default: false', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
+	echo '<p>'.__('<b>&alarm</b> adds an event alert and accepts values like <i>5M</i> , <i>15M</i>, <i>1H</i>, <i>24H</i>, etc. Default: none', ICALFEEDS_TEXTDOMAIN).'<br><i>Warning: this is ignored by many popular calendar apps.</i></p>';
 
     echo '</div>';
     
@@ -364,12 +378,16 @@ function icalfeeds_feed() {
 		) + $post_order_by;
 
 	}
+	
+	if (isset($_GET['posts'])) {
+	    $args['post__in'] = explode('+', $_GET['posts']);
+	}
 
 	// Get posts
 	$posts = new WP_Query( $args );
 	
     $events = null;
-
+    $alarm = null;
     while ( $posts->have_posts() ) {
     	$posts->the_post();
 
@@ -392,7 +410,18 @@ function icalfeeds_feed() {
         $permalink = get_permalink(get_the_ID());
         $timezone = get_option('timezone_string');
         $guid = urlencode( get_the_guid(get_the_ID()) );
-	$organizer = get_bloginfo( 'name' );
+	    $organizer = isset($_GET['blogname']) ? $_GET['blogname'] : get_bloginfo('name');
+	    
+	    $description = '';
+	    if ( isset($_GET['description']) ) {
+	        if( $_GET['description'] == 'excerpt' ) {
+                $description = strip_tags( html_entity_decode( get_the_excerpt() ) );
+	        } else {
+	            $description = strip_tags( html_entity_decode( get_post_meta( get_the_ID(), $_GET['description'], true ) ) );
+	        }
+        }
+        $description = isset($_GET['addlink']) ? $description . ' ' . $permalink  : $description;
+
         
 	    
 	//Set Static Start & End Time
@@ -411,6 +440,17 @@ function icalfeeds_feed() {
 	    $end_time = ":$end_time" . 'Z';
 	    $modified_time = ":$modified_time" . 'Z';
 
+        if ( isset($_GET['alarm']) ) {
+        $alarm_interval = $_GET['alarm'];
+        $alarm .= <<<ALARM
+BEGIN:VALARM
+TRIGGER:-PT$alarm_interval
+ACTION:DISPLAY 
+END:VALARM
+
+ALARM;
+        }
+
         $events .= <<<EVENT
 BEGIN:VEVENT
 UID:$guid
@@ -419,18 +459,20 @@ DTSTART$start_time
 DTEND$end_time
 ORGANIZER:$organizer
 SUMMARY:$summary
+DESCRIPTION: $description
 URL;VALUE=URI:$permalink
-END:VEVENT
+{$alarm}END:VEVENT
 
 EVENT;
 
     }
 
-    $blog_name = get_bloginfo('name');
+    $blog_name = isset($_GET['blogname']) ? $_GET['blogname'] : get_bloginfo('name');
     $blog_url = get_bloginfo('home');
+    $ics_filename = isset( $_GET['icsname']) ? $_GET['icsname'] : "blog_posts";
 
     header('Content-Type: text/calendar; charset=utf-8');
-    header('Content-Disposition: attachment; filename="blog_posts.ics"');
+    header('Content-Disposition: attachment; filename="' . $ics_filename  . '.ics"');
 
     $content = <<<CONTENT
 BEGIN:VCALENDAR
