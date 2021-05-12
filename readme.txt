@@ -1,9 +1,8 @@
 === iCal Feeds ===
 Contributors: maximevalette, geekysoft, contemplate
-Donate link: http://maxime.sh/paypal
 Tags: uri.lv, ical, posts, feed, future, calendar, agenda, webcal
 Requires at least: 3.0
-Tested up to: 4.7.2
+Tested up to: 5.7.1
 Stable tag: 1.5.3
 
 Generate a customizable iCal feed of your present and future blog posts.
