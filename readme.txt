@@ -4,7 +4,7 @@ Donate link: http://maxime.sh/paypal
 Tags: uri.lv, ical, posts, feed, future, calendar, agenda, webcal
 Requires at least: 3.0
 Tested up to: 4.7.2
-Stable tag: 1.5
+Stable tag: 1.5.3
 
 Generate a customizable iCal feed of your present and future blog posts.
 
@@ -21,6 +21,25 @@ Outlook, Hotmail, iCal, Evolution…
 3. Configure your feed from the new iCal Feeds Settings submenu
 
 == Changelog ==
+
+= 1.5.3 =
+
+* NEW: ability for custom field event link
+
+= 1.5.2 =
+
+* NEW: filter feed by single post ids
+* NEW: replace default blogname ( Thanks Poul Hornsleth )
+* NEW: replace default ics file name ( Thanks Poul Hornsleth )
+* NEW: add an event description from excerpt or custom field
+* NEW: add post link to the description
+* NEW: add alarm ability with custom interval ( may be ignored in popular Calendar apps )
+
+= 1.5.1 =
+
+* NEW: Default Start Time per post setting
+* ADDED: ORGANIZER field to iCal file for better validation
+* FIX: encoded UID field in iCal file for better validation
 
 = 1.5 =
 
