@@ -5,7 +5,7 @@ Plugin URI: http://maxime.sh/ical-feeds
 Description: Generate a customizable iCal feed of your present and future blog posts.
 Author: Maxime VALETTE
 Author URI: http://maxime.sh
-Version: 1.5.2
+Version: 1.5.3
 */
 
 define('ICALFEEDS_TEXTDOMAIN', 'icalfeeds');
@@ -244,6 +244,8 @@ function icalfeeds_conf() {
 	
 	echo '<p>'.__('<b>&addlink</b> appends the post link to the description field. Default: false', ICALFEEDS_TEXTDOMAIN).'</p>';
 	
+	echo '<p>'.__('<b>&customlink</b> use a custom field for the link. Fallback to post url if empty or not valid url. Example: &customlink=_event_url', ICALFEEDS_TEXTDOMAIN).'</p>';
+	
 	echo '<p>'.__('<b>&alarm</b> adds an event alert and accepts values like <i>5M</i> , <i>15M</i>, <i>1H</i>, <i>24H</i>, etc. Default: none', ICALFEEDS_TEXTDOMAIN).'<br><i>Warning: this is ignored by many popular calendar apps.</i></p>';
 
     echo '</div>';
@@ -407,7 +409,12 @@ function icalfeeds_feed() {
 
         //$modified_time = date( 'Ymd\THis', get_post_modified_time( 'U', true, $post->ID ) );
         $summary = strip_tags( html_entity_decode( get_the_title() ) );
-        $permalink = get_permalink(get_the_ID());
+        if( isset($_GET['customlink']) ){
+            $customlink = get_post_meta( get_the_ID(), $_GET['customlink'], true );
+            $permalink = filter_var($customlink, FILTER_VALIDATE_URL) ? $customlink : get_permalink(get_the_ID());
+        } else {
+            $permalink = get_permalink(get_the_ID());
+        }
         $timezone = get_option('timezone_string');
         $guid = urlencode( get_the_guid(get_the_ID()) );
 	    $organizer = isset($_GET['blogname']) ? $_GET['blogname'] : get_bloginfo('name');
